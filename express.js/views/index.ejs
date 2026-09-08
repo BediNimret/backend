@@ -1,0 +1,54 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/css/output.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 p-8">
+  <h1 class="text-3xl text-red-500 font-bold underline mb-6">
+    Enter Your Details
+  </h1>
+
+  <!-- Registration Form -->
+  <form action="/register" method="post" class="space-y-4 max-w-md">
+    <input name="name" type="text" placeholder="Name"
+      class="w-full p-2 border rounded font-semibold text-blue-600 outline-none" />
+    <input name="email" type="email" placeholder="Email"
+      class="w-full p-2 border rounded font-semibold text-blue-600 outline-none" />
+    <input name="age" type="number" placeholder="Age"
+      class="w-full p-2 border rounded font-semibold text-blue-600 outline-none" />
+    <input name="favColor" type="text" placeholder="Favorite Color"
+      class="w-full p-2 border rounded font-semibold text-blue-600 outline-none" />
+    <button type="submit"
+      class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">
+      Submit Your Response
+    </button>
+  </form>
+
+  <!-- Search Form -->
+  <form method="post" action="/getDetails" class="mt-6 max-w-md space-y-2">
+    <h3 class="font-bold">Enter the Email of the user whose details you want to see</h3>
+    <input name="email" placeholder="Email" type="email"
+      class="w-full p-2 border rounded outline-none" />
+    <button type="submit"
+      class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">
+      Get Details
+    </button>
+  </form>
+
+  <!-- Conditional Rendering -->
+  <% if (match) { %>
+    <div class="mt-10">
+      <p class="text-xl font-bold mb-4">Details you entered are:</p>
+      <div class="space-y-2">
+        <p class="p-2 bg-white rounded shadow">
+          <span class="font-semibold"><%= user.name %></span> |
+          Age: <%= user.age %> |
+          Email: <%= user.email %> |
+          Favorite Color: <%= user.favColor %>
+        </p>
+      </div>
+    </div>
+  <% } else if (error) { %>
+    <p class="text-red-600 font-bold mt-6"><%= error %></p>
+  <% } %>
+</body>
