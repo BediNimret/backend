@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/output.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+      async function createTodo(taskName) {
+        try {
+          const response = await axios.post("/api/createTask", {
+            id: Date.now(),
+            name: taskName,
+            completed: false,
+          });
+
+          console.log(response.data);
+          alert("Task created successfully!");
+          window.location.reload();
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      async function deleteTask(id){
+        try{
+          const response = await axios.delete( `/api/task/${encodeURIComponent(id)}`)
+          alert(response.data.message)
+          window.location.reload();
+        }catch(err){
+          alert(err)
+        }
+      }
+      async function changeTaskStatus(id){
+        try{
+          const response = await axios.put(`/api/task/${encodeURIComponent(id)}`)
+          alert(response.data.message)
+          window.location.reload()
+        }catch(err){
+          console.error(err)
+        }
+      }
+    </script>
+
+    <title>Todo List</title>
+  </head>
+
+  <body class="bg-gray-100">
+    <div class="flex min-h-screen items-center justify-center">
+      
+      <div>
+          <h1 class="text-3xl font-bold text-center text-gray-800 mb-4">
+          Incomplete Tasks
+        </h1>
+        
+          <% incomplete.forEach((task) => { %>
+            <div class="flex gap-2">
+            <p><%= task.name %></p>
+            <button onclick="deleteTask(`<%= task._id %>`)">Delete</button>
+            <button onclick="changeTaskStatus(`<%= task._id %>`)">Change to Completed</button>
+            </div>
+          <% }); %>
+          </div>
+          <div>
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-4">
+          Completed Tasks
+        </h1>
+        
+          <% completed.forEach((task) => { %>
+            <div class="flex gap-2">
+            <p><%= task.name %></p>
+            <button onclick="deleteTask(`<%= task._id %>`)">Delete</button>
+            <button onclick="changeTaskStatus(`<%= task._id %>`)">Change to Incomplete</button>
+            </div>
+          <% }); %>
+      </div>
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="Enter a new task"
+          class="border border-gray-300 rounded px-2 py-1 w-full mb-2"
+        />
+        <button
+          type="button"
+          class="rounded bg-black text-white px-3 py-2 border"
+          onclick="createTodo(document.getElementById('taskInput').value)"
+        >
+          Create Task
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
