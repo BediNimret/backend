@@ -6,7 +6,7 @@ function App() {
   const [tasks, setTasks] = React.useState([]);
   const handleSubmit = (prevData, formData) => {
     const taskName = formData.get("task");
-    const response = axios.post("http://localhost:8000/api/createTask", {
+    const response = axios.post("http://localhost:8000/api/todos", {
       id: new Date().getTime(),
       name: taskName,
       completed: false,
@@ -19,7 +19,7 @@ function App() {
   );
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/api/task/${id}`);
+      await axios.delete(`http://localhost:8000/api/todos/${id}`);
       setTasks((prevTasks) => prevTasks.filter((task) => task._id !== id));
     } catch (err) {
       console.error(err);
@@ -27,7 +27,7 @@ function App() {
   };
   const handleStatusChange = async (id) => {
     try {
-      await axios.put(`http://localhost:8000/api/task/${id}`);
+      await axios.put(`http://localhost:8000/api/todos/${id}`);
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task._id === id ? { ...task, completed: !task.completed } : task,
@@ -39,7 +39,7 @@ function App() {
   };
   useEffect(() => {
     const getList = async () => {
-      const response = await axios.get("http://localhost:8000/api/tasks");
+      const response = await axios.get("http://localhost:8000/api/todos");
       console.log(response.data);
       setTasks(response.data);
     };
