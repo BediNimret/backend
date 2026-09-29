@@ -2,20 +2,19 @@ require("dotenv").config();
 const connectToDatabase = require("./connection/db");
 const express = require("express");
 const path = require("path");
-const mongoose = require("mongoose");
 const todo = require("./model/todos");
 const route = require("./routes/apiRoutes");
 const cors = require("cors");
+const { logger } = require("./middlewere/addToFile");
 const app = express();
 const port = 8000;
-let tasks = [];
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
-app.use("/api/todos", route);
+app.use("/api/todos", logger, route);
 
 app.get("/", async (req, res) => {
   const task = await todo.find();
