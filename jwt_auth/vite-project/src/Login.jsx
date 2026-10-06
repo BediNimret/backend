@@ -14,12 +14,14 @@ export default function Login({ isOpen, setIsOpen, handleSnackbar }) {
           {
             email: formData.get("email"),
             password: formData.get("password"),
+            role: formData.get("role"),
           },
           {
             withCredentials: true,
           },
         );
         localStorage.setItem("sessionId", response.data.data.uid);
+        localStorage.setItem("role", response.data.data.role);
         handleSnackbar(
           response.data.message || "Registration successful.",
           false,
@@ -27,7 +29,6 @@ export default function Login({ isOpen, setIsOpen, handleSnackbar }) {
       } catch (error) {
         handleSnackbar("Registration failed.", true);
       }
-      return previousState;
     } else {
       try {
         const response = await axios.post(
@@ -41,6 +42,7 @@ export default function Login({ isOpen, setIsOpen, handleSnackbar }) {
           },
         );
         localStorage.setItem("sessionId", response.data.data.uid);
+        localStorage.setItem("role", response.data.data.role);
         handleSnackbar(response.data.message || "Login successful.");
       } catch (error) {
         handleSnackbar("Invalid email or password.", true);
@@ -104,6 +106,20 @@ export default function Login({ isOpen, setIsOpen, handleSnackbar }) {
                 type="password"
               />
             </label>
+            {isRegistering && (
+              <label className="flex flex-col gap-2 text-sm font-medium text-gray-700">
+                Role
+                <select
+                  className="w-full rounded-md border px-4 py-3 outline-indigo-400"
+                  name="role"
+                  defaultValue="USER"
+                  required
+                >
+                  <option value="USER">User</option>
+                  <option value="ADMIN">Admin</option>
+                </select>
+              </label>
+            )}
             {isRegistering && (
               <label className="flex flex-col gap-2 text-sm font-medium text-gray-700">
                 Confirm password

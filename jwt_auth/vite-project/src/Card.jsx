@@ -10,6 +10,7 @@ export default function Component({ product }) {
   });
 
   const sessionId = localStorage.getItem("sessionId");
+  const role = localStorage.getItem("role");
 
   const handleEditClick = () => {
     setIsOpen(true);
@@ -42,7 +43,7 @@ export default function Component({ product }) {
             {product.description}
           </p>
 
-          {sessionId && (
+          {sessionId && role === "ADMIN" && (
             <div className="flex items-center justify-center gap-4">
               <button
                 onClick={handleEditClick}

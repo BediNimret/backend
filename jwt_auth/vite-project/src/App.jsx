@@ -47,6 +47,7 @@ function App() {
     }, 5000);
   };
   const sessionId = localStorage.getItem("sessionId");
+  const role = localStorage.getItem("role");
 
   const logout = async () => {
     setLoading(true);
@@ -73,7 +74,7 @@ function App() {
       <div className="flex border-none w-full h-screen max-w-full flex-col overflow-x-hidden bg-gradient-to-r from-purple-200 to-pink-200">
         <div className="flex items-center justify-between px-4 py-2 bg-purple-700 text-white">
           <h1 className="text-2xl font-bold">My E-commerce App</h1>
-          {sessionId && (
+          {sessionId && role === "ADMIN" && (
             <button
               onClick={handleEditClick}
               className="flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-purple-700 hover:bg-gray-100 focus:outline-none"

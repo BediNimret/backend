@@ -3,7 +3,11 @@ require("dotenv").config();
 const secretKey = process.env.JWT_SECRET_KEY;
 
 const setUser = (user) => {
-  return jwt.sign(user, secretKey, { expiresIn: "1h" });
+  return jwt.sign(
+    { id: user._id, email: user.email, role: user.role },
+    secretKey,
+    { expiresIn: "1h" },
+  );
 };
 
 const getUser = (id) => {

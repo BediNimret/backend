@@ -25,7 +25,7 @@ async function login(req, res) {
 
     return res.json({
       message: "Login successful",
-      data: { uid: sessionId },
+      data: { uid: sessionId, role: user.role },
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });
@@ -52,7 +52,7 @@ async function logout(req, res) {
 
 async function register(req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     if (!email || !password) {
       return res
@@ -65,8 +65,12 @@ async function register(req, res) {
       return res.status(409).json({ message: "User already exists" });
     }
 
-    const user = await userModel.create({ email, password });
-    const sessionId = setUser({ _id: user._id, email: user.email });
+    const user = await userModel.create({ email, password, role });
+    const sessionId = setUser({
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+    });
     res.cookie("sessionId", sessionId, {
       httpOnly: true,
       sameSite: "lax",
@@ -75,7 +79,7 @@ async function register(req, res) {
 
     return res.json({
       message: "User registered successfully",
-      data: { uid: sessionId },
+      data: { uid: sessionId, role: user.role },
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });
